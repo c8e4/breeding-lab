@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { landCopters } from "$lib/landCopters";
     import { store } from "$lib/store";
 
     function onPaste(event) {
@@ -6,7 +7,6 @@
         let paste = (event.clipboardData || window.clipboardData).getData(
             "text"
         );
-        console.log(paste);
     }
 
     let fragmentGroups = [{ text: "giganose" }, { text: "mask" }];
@@ -23,11 +23,9 @@
         );
         for (let i = 0; i < candidates[0].length; i++) {
             for (let j = 0; j < candidates[1].length; j++) {
+                const fragments = landCopters(JSON.parse(JSON.stringify([candidates[0][i], candidates[1][j]])));
                 samples.push(
-                    [
-                        ...candidates[0][i].layers,
-                        ...candidates[1][j].layers,
-                    ].sort((a, b) => a.order - b.order)
+                    fragments.flatMap(f => f.layers).sort((a, b) => a.order - b.order)
                 );
             }
         }
