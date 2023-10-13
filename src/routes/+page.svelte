@@ -1,6 +1,7 @@
 <script lang="ts">
     import { landCopters } from "$lib/landCopters";
     import { store } from "$lib/store";
+    import {onMount} from "svelte";
 
     function onPaste(event) {
         event.preventDefault();
@@ -30,6 +31,11 @@
             }
         }
     }
+
+    const previewWidth =     300;
+    const previewHeight =    previewWidth * 965/581;
+
+    onMount(calculate)
 </script>
 
 <svelte:window on:paste={onPaste} />
@@ -55,19 +61,67 @@
 
 <div class="w-full flex flex-wrap">
     {#each samples as layerlist}
-        <div class="relative" style="width:100px;height:200px">
+        <div class="relative" style="width:{previewWidth}px;height:{previewHeight}px">
             {#each layerlist as layer}
                 {#if layer.change}
                     <img
                         class="absolute"
-                        style="width:100px;height:200px;"
+                        style={`height:${
+                            (layer.scale
+                                ? layer.scale
+                                : 100) /
+                                100 *
+                            previewHeight *
+                            (layer.copterScale ?? 1)
+                        }px; width:${
+                            (layer.scale
+                                ? layer.scale
+                                : 100) /
+                                100 *
+                            previewWidth *
+                            (layer.copterScale ?? 1)
+                        }px; top:${
+                            layer.top +
+                            (layer.copterOffsetY
+                                ? layer.copterOffsetY * previewHeight
+                                : 0)
+                        }px;left:${
+                            layer.left +
+                            (layer.copterOffsetX
+                                ? layer.copterOffsetX * previewWidth
+                                : 0)
+                        }px;`}
                         src="bitmasks/export/{layer.change}"
                         alt=""
                     />
                 {/if}
                 <img
                     class="absolute"
-                    style="width:100px;height:200px;"
+                    style={`height:${
+                        (layer.scale
+                            ? layer.scale
+                            : 100) /
+                            100 *
+                        previewHeight *
+                        (layer.copterScale ?? 1)
+                    }px; width:${
+                        (layer.scale
+                            ? layer.scale
+                            : 100) /
+                            100 *
+                        previewWidth *
+                        (layer.copterScale ?? 1)
+                    }px; top:${
+                        layer.top +
+                        (layer.copterOffsetY
+                            ? layer.copterOffsetY * previewHeight
+                            : 0)
+                    }px;left:${
+                        layer.left +
+                        (layer.copterOffsetX
+                            ? layer.copterOffsetX * previewWidth
+                            : 0)
+                    }px;`}
                     src="bitmasks/export/{layer.outline}"
                     alt=""
                 />
