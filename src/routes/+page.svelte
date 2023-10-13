@@ -54,7 +54,7 @@
 {#if showGroups}
     <div class="flex flex-col">
         {#each fragmentGroups as group}
-            <textarea type="text" value={group.text} />
+            <textarea type="text" bind:value={group.text} />
         {/each}
     </div>
     <div><button on:click={calculate}>calculate</button></div>
