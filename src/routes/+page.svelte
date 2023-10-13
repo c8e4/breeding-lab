@@ -28,6 +28,7 @@
                 samples.push(
                     fragments.flatMap(f => f.layers).sort((a, b) => a.order - b.order)
                 );
+                console.log(fragments.flatMap(f => f.layers).filter(l => !l.copterOffsetY))
             }
         }
     }
@@ -62,31 +63,21 @@
 <div class="w-full flex flex-wrap">
     {#each samples as layerlist}
         <div class="relative" style="width:{previewWidth}px;height:{previewHeight}px">
-            {#each layerlist as layer}
+            {#each layerlist as layer, index}
                 {#if layer.change}
                     <img
                         class="absolute"
                         style={`height:${
-                            (layer.scale
-                                ? layer.scale
-                                : 100) /
-                                100 *
                             previewHeight *
                             (layer.copterScale ?? 1)
                         }px; width:${
-                            (layer.scale
-                                ? layer.scale
-                                : 100) /
-                                100 *
                             previewWidth *
                             (layer.copterScale ?? 1)
                         }px; top:${
-                            layer.top +
                             (layer.copterOffsetY
                                 ? layer.copterOffsetY * previewHeight
                                 : 0)
                         }px;left:${
-                            layer.left +
                             (layer.copterOffsetX
                                 ? layer.copterOffsetX * previewWidth
                                 : 0)
@@ -98,26 +89,16 @@
                 <img
                     class="absolute"
                     style={`height:${
-                        (layer.scale
-                            ? layer.scale
-                            : 100) /
-                            100 *
                         previewHeight *
                         (layer.copterScale ?? 1)
                     }px; width:${
-                        (layer.scale
-                            ? layer.scale
-                            : 100) /
-                            100 *
                         previewWidth *
                         (layer.copterScale ?? 1)
                     }px; top:${
-                        layer.top +
                         (layer.copterOffsetY
                             ? layer.copterOffsetY * previewHeight
                             : 0)
                     }px;left:${
-                        layer.left +
                         (layer.copterOffsetX
                             ? layer.copterOffsetX * previewWidth
                             : 0)
